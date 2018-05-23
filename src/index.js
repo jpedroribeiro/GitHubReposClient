@@ -6,30 +6,7 @@ import rootReducer from './reducers/reducers';
 import './index.css';
 import App from './App';
 
-const tempRepos = [
-	{
-		createdAt: '12/12/12a',
-		description: 'PropTypes.string',
-		id: 'PropTypes.number',
-		name: 'PropTypes.string',
-		primaryLanguage: 'PropTypes.string',
-		pushedAt: 'PropTypes.number',
-		repositoryTopics: 'PropTypes.any',
-		url: 'PropTypes.string'
-	},
-	{
-		createdAt: '12/12/12',
-		description: 'PropTypes.string',
-		id: 'PropTypes.numbedr',
-		name: 'PropTypes.string',
-		primaryLanguage: 'PropTypes.string',
-		pushedAt: 'PropTypes.number',
-		repositoryTopics: 'PropTypes.any',
-		url: 'PropTypes.string'
-	}
-];
-
-const store = createStore(rootReducer, { repos: tempRepos });
+const store = createStore(rootReducer);
 
 ReactDOM.render(
 	<Provider store={store}>
