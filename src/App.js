@@ -1,37 +1,39 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import List from './containers/VisibleList';
-import VisibleList from './containers/VisibleList';
-import { addRepo } from './actions/actions';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import Author from './components/Author';
+import List from './components/List';
 
 class App extends Component {
-	componentDidMount() {
-		const tempRepos = [
-			{
-				createdAt: '12/12/12a',
-				description: 'PropTypes.string',
-				id: 'PropTypes.number',
-				name: 'PropTypes.string',
-				primaryLanguage: 'PropTypes.string',
-				pushedAt: 'PropTypes.number',
-				repositoryTopics: 'PropTypes.any',
-				url: 'PropTypes.string'
-			},
-			{
-				createdAt: '12/12/12',
-				description: 'PropTypes.string',
-				id: 'PropTypes.numbedr',
-				name: 'PropTypes.string',
-				primaryLanguage: 'PropTypes.string',
-				pushedAt: 'PropTypes.number',
-				repositoryTopics: 'PropTypes.any',
-				url: 'PropTypes.string'
+	// TODO move this away
+	authorQuery = gql`
+		{
+			author {
+				name
+				bio
+				avatarUrl
+				location
+				url
 			}
-		];
+		}
+	`;
 
-		this.props.addNewRepo(tempRepos[0]);
-		this.props.addNewRepo(tempRepos[1]);
-	}
+	reposQuery = gql`
+		{
+			repositories {
+				id
+				name
+				createdAt
+				description
+				url
+				pushedAt
+				primaryLanguage
+				topics {
+					name
+				}
+			}
+		}
+	`;
 
 	render() {
 		return (
@@ -40,26 +42,28 @@ class App extends Component {
 					<h1>Projects on GitHub</h1>
 				</header>
 
-				<div>Profile info goes here</div>
+				<Query query={this.authorQuery}>
+					{({ loading, error, data }) => {
+						if (loading) return <p>Loading author profile...</p>;
+						if (error) return <p>Error loading author profile...</p>;
+						return <Author profile={data.author} />;
+					}}
+				</Query>
 
-				<div>Filter goes here</div>
+				<div>
+					<b>Filter</b> goes here
+				</div>
 
-				<VisibleList />
+				<Query query={this.reposQuery}>
+					{({ loading, error, data }) => {
+						if (loading) return <p>Loading repos...</p>;
+						if (error) return <p>Error loading repos...</p>;
+						return <List repos={data.repositories} />;
+					}}
+				</Query>
 			</div>
 		);
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		state
-	};
-}
-
-function mapDispatchToProps(dispatch) {
-	return {
-		addNewRepo: repo => dispatch(addRepo(repo))
-	};
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

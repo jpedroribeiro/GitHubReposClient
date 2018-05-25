@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const Item = props => {
@@ -11,7 +11,7 @@ const Item = props => {
 			name: {repo.name} <br />
 			primaryLanguage: {repo.primaryLanguage} <br />
 			pushedAt: {repo.pushedAt} <br />
-			repositoryTopics: {repo.repositoryTopics} <br />
+			repositoryTopics: {JSON.stringify(repo.topics)} <br />
 			{/* nodes: [{topic: {name: "chrome-extension"}}…] */}
 			url: {repo.url}
 		</li>
@@ -26,7 +26,7 @@ Item.propTypes = {
 		name: PropTypes.string,
 		primaryLanguage: PropTypes.string,
 		pushedAt: PropTypes.string,
-		repositoryTopics: PropTypes.any,
+		topics: PropTypes.any,
 		url: PropTypes.string
 	})
 };

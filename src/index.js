@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import rootReducer from './reducers/reducers';
+import { ApolloProvider } from 'react-apollo';
+import ApolloClient from 'apollo-boost';
 import './index.css';
 import App from './App';
 
-const store = createStore(rootReducer);
+const client = new ApolloClient({
+	uri: 'https://github-repos-server.herokuapp.com/graphql'
+});
 
 ReactDOM.render(
-	<Provider store={store}>
+	<ApolloProvider client={client}>
 		<App />
-	</Provider>,
+	</ApolloProvider>,
 	document.getElementById('root')
 );
