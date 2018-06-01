@@ -1,22 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Item = props => {
-	const repo = props.repo;
-	return (
-		<li>
-			createdAt: {repo.createdAt} <br />
-			description: {repo.description} <br />
-			id: {repo.id} <br />
-			name: {repo.name} <br />
-			primaryLanguage: {repo.primaryLanguage} <br />
-			pushedAt: {repo.pushedAt} <br />
-			repositoryTopics: {JSON.stringify(repo.topics)} <br />
-			{/* nodes: [{topic: {name: "chrome-extension"}}…] */}
-			url: {repo.url}
-		</li>
-	);
-};
+class Item extends React.Component {
+	repo = this.props.repo;
+
+	topics() {
+		const topics = this.props.repo.topics;
+		if (topics.length) {
+			return (
+				<ul>
+					{topics.map(topic => {
+						return (
+							<li key={topic[Object.getOwnPropertySymbols(topic)[0]]}>
+								{topic.name}
+							</li>
+						);
+					})}
+				</ul>
+			);
+		}
+	}
+
+	betterDate(ISODate) {
+		const betterDate = new Date(ISODate);
+		return betterDate.toLocaleDateString();
+	}
+
+	render() {
+		return (
+			<article>
+				<h3>
+					{this.repo.name} (<i>{this.repo.primaryLanguage}</i>)
+				</h3>
+				<p>
+					<a href={this.repo.url} target="_blank">
+						{this.repo.url}
+					</a>
+				</p>
+				<p>{this.repo.description}</p>
+				<p>
+					Created at: {this.betterDate(this.repo.createdAt)} / Last push at:{' '}
+					{this.betterDate(this.repo.pushedAt)}{' '}
+				</p>
+
+				{this.topics()}
+			</article>
+		);
+	}
+}
 
 Item.propTypes = {
 	repo: PropTypes.shape({

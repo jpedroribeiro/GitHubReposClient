@@ -1,62 +1,31 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
+import Header from './components/Header';
+import Filter from './components/Filter';
+import Loading from './components/Loading';
 import Author from './components/Author';
 import List from './components/List';
+import { authorQuery, reposQuery } from './queries';
 
 class App extends Component {
-	// TODO move this away
-	authorQuery = gql`
-		{
-			author {
-				name
-				bio
-				avatarUrl
-				location
-				url
-			}
-		}
-	`;
-
-	reposQuery = gql`
-		{
-			repositories {
-				id
-				name
-				createdAt
-				description
-				url
-				pushedAt
-				primaryLanguage
-				topics {
-					name
-				}
-			}
-		}
-	`;
-
 	render() {
 		return (
 			<div>
-				<header>
-					<h1>Projects on GitHub</h1>
-				</header>
-
-				<Query query={this.authorQuery}>
+				<Header /> {/* TODO styles for app*/}
+				
+				<Query query={authorQuery}>
 					{({ loading, error, data }) => {
-						if (loading) return <p>Loading author profile...</p>;
+						if (loading) return <Loading />;
 						if (error) return <p>Error loading author profile...</p>;
 						return <Author profile={data.author} />;
 					}}
 				</Query>
 
-				<div>
-					<b>Filter</b> goes here
-				</div>
+				<Filter /> {/* TODO filters for repo list */}
 
-				<Query query={this.reposQuery}>
+				<Query query={reposQuery}>
 					{({ loading, error, data }) => {
-						if (loading) return <p>Loading repos...</p>;
+						if (loading) return <Loading />;
 						if (error) return <p>Error loading repos...</p>;
 						return <List repos={data.repositories} />;
 					}}

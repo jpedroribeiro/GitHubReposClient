@@ -10,11 +10,11 @@ class List extends Component {
 
 	listRepos() {
 		return (
-			<ol>
+			<React.Fragment>
 				{this.props.repos.map(repo => {
 					return <Item repo={repo} key={repo.id} />;
 				})}
-			</ol>
+			</React.Fragment>
 		);
 	}
 
