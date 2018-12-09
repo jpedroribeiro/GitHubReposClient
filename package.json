@@ -19,6 +19,8 @@
   },
   "devDependencies": {
     "eslint": "^4.19.1",
-    "merge": "^1.2.1"
+    "macaddress": "^0.2.9",
+    "merge": "^1.2.1",
+    "url-parse": "^1.4.4"
   }
 }
